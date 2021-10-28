@@ -1,3 +1,5 @@
+//When there is no overflow, the below code will work just fine.
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -19,5 +21,61 @@ int main(){
         cin >> n >> r;
         cout << comb[n]/(comb[r]*comb[n-r]) << endl;
     }
+    return 0;
+}
+
+
+//In case of overflow, use this. This is the most optimal method using MOD
+
+
+#include<iostream>
+using namespace std;
+#define int long long
+
+int mod = (int)(1e9+7);
+int fact[100006];
+int powerr[100006];
+void PreComputeFact(){
+    fact[0] = 1;
+    int ans = 1;
+    for(int i = 1; i <= 100005; i++){
+        ans = (ans*i)%mod; 
+        fact[i] = ans;
+        powerr[i] = (fact[i],mod-2,mod);
+    }
+}
+
+int power(int base, int n, int mod){
+    int ans = 1;
+    while(n){
+        if(n%2){
+            n = n-1;
+            ans = (ans*base)%mod;
+        }
+        else{
+            n = n/2;
+            base = (base*base)%mod;
+        }
+    }
+    return ans;
+}
+
+int ncr(int n, int r){
+    return (fact[n]*(powerr[r]*powerr[n-r])%mod)%mod;
+}
+
+void testcase(){
+    PreComputeFact();
+    int t;
+    cin >> t;
+    while(t--){
+        int n, r;
+        cin >> n >> r;
+        cout << ncr(n,r) << endl;
+    }
+}
+
+signed main(){
+    testcase();
     return 0;
 }
