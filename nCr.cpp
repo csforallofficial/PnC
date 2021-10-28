@@ -27,23 +27,12 @@ int main(){
 
 //In case of overflow, use this. This is the most optimal method using MOD
 
-
 #include<iostream>
 using namespace std;
 #define int long long
 
+int fact[100006], powerr[100006];
 int mod = (int)(1e9+7);
-int fact[100006];
-int powerr[100006];
-void PreComputeFact(){
-    fact[0] = 1;
-    int ans = 1;
-    for(int i = 1; i <= 100005; i++){
-        ans = (ans*i)%mod; 
-        fact[i] = ans;
-        powerr[i] = (fact[i],mod-2,mod);
-    }
-}
 
 int power(int base, int n, int mod){
     int ans = 1;
@@ -60,6 +49,16 @@ int power(int base, int n, int mod){
     return ans;
 }
 
+void PreComputeFact(){
+    fact[0] = 1;
+    int ans = 1;
+    for(int i = 1; i <= 100005; i++){
+        ans = (ans*i)%mod; 
+        fact[i] = ans;
+        powerr[i] = power(fact[i],mod-2,mod);
+    }
+}
+
 int ncr(int n, int r){
     return (fact[n]*(powerr[r]*powerr[n-r])%mod)%mod;
 }
@@ -71,7 +70,7 @@ void testcase(){
     while(t--){
         int n, r;
         cin >> n >> r;
-        cout << ncr(n,r) << endl;
+        cout << ncr(n-1,r-1) << endl;
     }
 }
 
